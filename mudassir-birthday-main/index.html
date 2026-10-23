@@ -62,6 +62,23 @@ dialog::backdrop{background:#000b}dialog h2{font:600 22px var(--h);margin:0 0 10
 .dlf.l{left:12px;transform-origin:left}.dlf.r{right:12px;transform-origin:right}.dlf::after{content:"";position:absolute;top:50%;width:10px;height:10px;border-radius:50%;background:var(--gold)}.dlf.l::after{right:10px}.dlf.r::after{left:10px}
 .dfr.open .dlf.l{transform:rotateY(-80deg)}.dfr.open .dlf.r{transform:rotateY(80deg)}
 
+
+html.end{--bg:#14060c;--c1:#220a14;--c2:#34101f;--gold:#ff7aa2;--gold2:#ffd0de;--rose:#ff7aa2;--ln:#ff7aa240}
+html.end body{background:radial-gradient(700px 480px at 0 -5%,#ff7aa22e,transparent 70%),radial-gradient(600px 500px at 100% 40%,#a03a8226,transparent 70%),var(--bg)}
+.gx{background:var(--c1);border:1px solid var(--ln);border-radius:26px;padding:34px 20px;margin:26px 0;text-align:center}.gx h2{font:600 28px var(--h);color:var(--gold2)}.gx .lead{color:var(--mute);margin:6px auto 24px;max-width:44ch}
+.gsoon{display:inline-block;background:var(--gold);color:#1a1405;font:700 13px var(--b);letter-spacing:.08em;text-transform:uppercase;padding:4px 14px;border-radius:99px;margin-bottom:12px}
+.gsc{display:flex;gap:40px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:left}
+.gfr{position:relative;width:min(240px,70vw);aspect-ratio:3/4;background:#2a2538;padding:12px;border-radius:8px 8px 0 0;box-shadow:0 20px 50px #0008;perspective:900px}
+.grm{position:absolute;inset:12px;display:grid;place-items:center;text-align:center;background:radial-gradient(circle at 50% 40%,#fff1c4,#f3c76a);color:#3a2a06;font:700 19px/1.3 var(--h);padding:12px}.grm span{display:block;font-size:52px}
+.gl{position:absolute;top:12px;bottom:12px;width:calc(50% - 12px);background:linear-gradient(90deg,#3b2f2a,#5a4637 50%,#3b2f2a);box-shadow:inset 0 0 0 6px #0003;transition:transform 1.3s cubic-bezier(.5,0,.2,1)}
+.gl.l{left:12px;transform-origin:left}.gl.r{right:12px;transform-origin:right}.gl::after{content:"";position:absolute;top:50%;width:10px;height:10px;border-radius:50%;background:var(--gold)}.gl.l::after{right:10px}.gl.r::after{left:10px}
+.gfr.open .gl.l{transform:rotateY(-80deg)}.gfr.open .gl.r{transform:rotateY(80deg)}
+.glock{position:absolute;z-index:3;left:50%;top:50%;translate:-50% -50%;font-size:32px;background:#0E0B14;border:2px solid var(--gold);border-radius:50%;width:62px;height:62px;display:grid;place-items:center;transition:opacity .4s;animation:gp 2s ease-in-out infinite}@keyframes gp{50%{scale:1.1}}.gfr.open .glock,.gfr.ready .glock{opacity:0}
+.gside{flex:1;min-width:250px;max-width:380px}.gbx{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.gbx div{background:var(--c2);border:1px solid var(--ln);border-radius:14px;padding:12px 4px;text-align:center}.gbx b{display:block;font:700 28px var(--h);color:var(--gold2);font-variant-numeric:tabular-nums}.gbx small{font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em}
+#hr{position:fixed;inset:0;z-index:95;display:none;flex-direction:column;align-items:center;justify-content:center;background:#14060cf2;padding:20px;text-align:center;overflow:auto}#hr.on{display:flex}
+#hr svg{width:min(230px,60vw);animation:hb 1.2s ease-in-out infinite;filter:drop-shadow(0 0 30px #ff4d7d99)}@keyframes hb{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
+#hr h2{font:600 30px var(--h);color:var(--gold2);margin:14px 0 6px}#hr p{max-width:40ch;white-space:pre-line}
 [hidden]{display:none!important}
 main{max-width:1040px}
 @media(min-width:860px){header{display:grid;grid-template-columns:1.25fr .75fr;column-gap:48px;align-items:start}header>*{grid-column:1;justify-self:start}header>.hero{grid-column:2;grid-row:1/span 8;justify-self:center;width:min(300px,100%);margin:0}header>.stats{justify-self:stretch}}
@@ -92,9 +109,15 @@ main{max-width:1040px}
 <section class="sup" id="sup" hidden><h2>Birthday Support Centre 🎧</h2><p>Welcome to Birthday Support Centre. Aap ki birthday complaint register ho chuki hai.</p><div class="opts" id="so"></div><p class="rep" id="sr"></p><div id="sf"></div></section>
 <section class="cake locked" id="ck"><h2>A surprise for you, Mudassir</h2><p class="lead" id="ckl"></p><div id="cw"><div class="cd5"><i class="cdl" style="height:62px"></i><i class="cdl" style="height:80px"></i><i class="cdl" style="height:98px"></i><i class="cdl" style="height:80px"></i><i class="cdl" style="height:62px"></i></div><div class="base"></div></div><div class="row"><button id="bl" type="button" disabled>🔒 Opens at 12:00 AM</button><button id="sd" class="ghost" type="button">Sound: on</button></div></section>
 <section class="thread" id="t" aria-live="polite"></section>
+<section class="gx" id="gf"><span class="gsoon" id="gsn">Coming soon</span><h2>Aap ka asli tohfa 🎁</h2><p class="lead" id="gls"></p>
+<div class="gsc"><div class="gfr" id="gfr"><div class="grm"><div><span>🎁</span><i id="gri" style="font-style:normal">Jaldi khulega</i></div></div><i class="gl l"></i><i class="gl r"></i><div class="glock">🔒</div></div>
+<div class="gside"><div class="gbx"><div><b id="gd">00</b><small>Din</small></div><div><b id="gh">00</b><small>Ghante</small></div><div><b id="gm">00</b><small>Minute</small></div><div><b id="gs">00</b><small>Second</small></div></div><p id="gmsg"></p><button id="gob" type="button" hidden>🚪 Khud kholiye</button></div></div></section>
+<section class="gx" id="nx" hidden><span class="gsoon">Last surprise</span><h2>Ek surprise abhi baqi hai 💗</h2><p class="lead">Ye aap ko agle birthday par milega, 24 October 2027 ko.</p>
+<div class="gbx" style="max-width:380px;margin:0 auto 14px"><div><b id="nd">00</b><small>Din</small></div><div><b id="nh">00</b><small>Ghante</small></div><div><b id="nm">00</b><small>Minute</small></div><div><b id="ns">00</b><small>Second</small></div></div><button id="nb" type="button" hidden>💗 Aakhri surprise kholiye</button></section>
 <footer>Bewi ka kaam hi husband ko tang karna hota hai. 💛<br>Made with code aur thori si mohabbat.</footer>
 </main>
 <div id="cur"><div class="stage" id="stg"><div class="cin" id="cin"></div><div class="crt l"><span>A new</span></div><div class="crt r"><span>surprise</span></div></div></div>
+<div id="hr"><svg viewBox="0 0 100 90"><defs><linearGradient id="hg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9ab8"/><stop offset="1" stop-color="#e0245e"/></linearGradient></defs><path fill="url(#hg)" d="M50 85C10 55 0 30 22 15 36 6 48 14 50 24 52 14 64 6 78 15 100 30 90 55 50 85Z"/></svg><h2 id="hh"></h2><p id="hp"></p><button id="hx" type="button" style="margin-top:16px">Theek hai 💗</button></div>
 <canvas id="cv"></canvas>
 <dialog id="dl"><h2 id="dh"></h2><p id="dp"></p><button id="dx" type="button">Theek hai 💛</button></dialog>
 <script>
@@ -208,6 +231,26 @@ function nextPop(){const d=q.shift();if(!d){po=false;$("cur").classList.remove("
  const h=document.createElement("h2"),p=document.createElement("p"),b=document.createElement("button");h.textContent=d.title;p.textContent=d.body;b.type="button";b.textContent=q.length?"Next ➜":"Close 💛";b.onclick=nextPop;
  c.append(im,h,p,b);$("stg").classList.remove("opn");$("cur").classList.add("on");setTimeout(()=>{$("stg").classList.add("opn");boom()},350)}
 if(!first){const nw=DROPS.filter(d=>ts(d)<=now()&&ts(d)>seen);if(nw.length)pop(nw[nw.length-1])}
+
+// ---- Gift door (16 Nov) -> theme change -> last surprise (24 Oct 2027) ----
+const GIFT_AT="2026-11-16T14:00",NEXT_AT="2027-10-24T00:00";
+const GIFT_MSG="Aap ka gift pohanch gaya hai. Ab dekhiye, aur mujhe batayiye kaisa laga. 💛";
+const LAST_T=`Happy ${AGE+1}th Birthday, ${NAME} 💗`;
+const LAST_B=`Ek saal beet gaya, aur aap abhi bhi mere saath hain. Mujhe yehi sab se zyada pasand hai.\n\nAllah aap ko sehat, kamyabi aur wohi muskurahat de.\n\nLove you, ${NAME}. ❤️\n\n— Aap ki pagli`;
+const GT=new Date(GIFT_AT+":00+05:00").getTime(),NT=new Date(NEXT_AT+":00+05:00").getTime(),z2=x=>String(x).padStart(2,"0");
+let gopen=0;try{if(P.get("reset"))localStorage.removeItem("gopen");gopen=+localStorage.getItem("gopen")||0}catch(e){}
+function cdn(r,a){r=Math.max(0,r);[r/86400|0,r%86400/3600|0,r%3600/60|0,r%60].forEach((v,i)=>$(a[i]).textContent=z2(v))}
+function gtick(){const n=now(),r=Math.floor((GT-n)/1000),f=$("gfr");
+ if(gopen){f.classList.add("open");f.classList.remove("ready");$("gsn").textContent="Khul gaya";$("gri").textContent="";$("gls").textContent="Tohfa khul chuka hai.";$("gmsg").textContent=GIFT_MSG;$("gob").hidden=true;cdn(0,["gd","gh","gm","gs"])}
+ else if(r>0){cdn(r,["gd","gh","gm","gs"]);$("gls").textContent="Darwaza abhi band hai. Tohfa raaste mein hai, sabr ka phal meetha hota hai.";$("gmsg").textContent="Waqt poora hote hi ye darwaza khud kholne ke liye tayyar ho jayega. 🤍"}
+ else{cdn(0,["gd","gh","gm","gs"]);f.classList.add("ready");$("gsn").textContent="Aa gaya!";$("gri").textContent="Khud kholiye";$("gls").textContent="Tohfa pohanch gaya hai!";$("gmsg").textContent="Darwaza kholiye aur dekhiye, andar kya hai. 🤍";$("gob").hidden=false}
+ document.documentElement.classList.toggle("end",!!gopen);$("nx").hidden=!gopen;
+ if(gopen){$("h").textContent=`Ab sirf ek surprise baqi hai, ${NAME} 💗`;$("s").textContent="Baqi sab surprises khul chuke hain. Aakhri surprise agle birthday par khulega.";
+  const r2=Math.floor((NT-n)/1000);cdn(r2,["nd","nh","nm","ns"]);$("nb").hidden=r2>0}}
+$("gob").onclick=()=>{$("gob").hidden=true;$("gfr").classList.add("open");boom();setTimeout(()=>{gopen=1;try{localStorage.setItem("gopen","1")}catch(e){}gtick();boom()},2400)};
+let hv;$("nb").onclick=()=>{$("hh").textContent=LAST_T;$("hp").textContent=LAST_B;$("hr").classList.add("on");boom();hv=setInterval(()=>sp(Math.random()*innerWidth,innerHeight*.9,pick(["❤️","💗","💖","💛"])),180)};
+$("hx").onclick=()=>{$("hr").classList.remove("on");clearInterval(hv)};
+gtick();setInterval(gtick,1000);
 head();tick();setInterval(tick,1000);
 </script>
 </body>
