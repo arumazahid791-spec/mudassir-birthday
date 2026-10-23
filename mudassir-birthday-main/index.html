@@ -50,6 +50,17 @@ canvas{position:fixed;inset:0;pointer-events:none;z-index:99}
 dialog{border:1px solid var(--gold);border-radius:26px;padding:24px;max-width:min(90vw,440px);background:var(--c2);color:var(--ink);box-shadow:0 0 60px #d8b35e33;animation:pop .35s cubic-bezier(.2,1.3,.4,1)}
 dialog::backdrop{background:#000b}dialog h2{font:600 22px var(--h);margin:0 0 10px;color:var(--gold2)}dialog p{margin:0;white-space:pre-line}
 @media (prefers-reduced-motion:reduce){.msg,dialog,.cdl::before{animation:none}}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0 0}
+.stat{background:var(--c1);border:1px solid var(--ln);border-radius:16px;padding:12px 8px;text-align:center}.stat b{display:block;font:700 26px var(--h);color:var(--gold2)}.stat small{font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em}
+.lockbox{display:flex;gap:14px;align-items:center;background:linear-gradient(135deg,var(--c1),var(--c2));border:1px solid var(--ln);border-radius:18px;padding:14px 18px}
+.lockbox i{font-style:normal;font-size:22px;width:46px;height:46px;border-radius:14px;background:#0006;border:1px solid var(--gold);display:grid;place-items:center;flex:none}
+.lockbox strong{display:block;color:var(--gold2);font:600 16px var(--h);letter-spacing:.04em}.lockbox span{color:var(--mute);font-size:14px}
+.dsc{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}.dfr{position:relative;width:min(230px,70vw);aspect-ratio:3/4;background:#2a2538;padding:12px;border-radius:8px 8px 0 0;box-shadow:0 20px 50px #0008;perspective:900px}
+.drm{position:absolute;inset:12px;display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,#fff1c4,#f3c76a);color:#3a2a06;font:700 20px var(--h);padding:10px}
+.dlf{position:absolute;top:12px;bottom:12px;width:calc(50% - 12px);background:linear-gradient(90deg,#2d2511,#5a4a22 50%,#2d2511);box-shadow:inset 0 0 0 6px #0003;transition:transform 1.3s cubic-bezier(.5,0,.2,1)}
+.dlf.l{left:12px;transform-origin:left}.dlf.r{right:12px;transform-origin:right}.dlf::after{content:"";position:absolute;top:50%;width:10px;height:10px;border-radius:50%;background:var(--gold)}.dlf.l::after{right:10px}.dlf.r::after{left:10px}
+.dfr.open .dlf.l{transform:rotateY(-80deg)}.dfr.open .dlf.r{transform:rotateY(80deg)}
 </style>
 </head>
 <body>
@@ -60,6 +71,7 @@ dialog::backdrop{background:#000b}dialog h2{font:600 22px var(--h);margin:0 0 10
 <div class="next" id="n" hidden><span id="nl">Agla surprise</span><b id="c">--:--:--</b></div>
 <figure class="hero"><img src="assets/p1.jpg" alt="Mudassir"><figcaption>Wanted: Mudassir 🔍</figcaption></figure>
 <button id="rm" type="button">🔔 Reminders + Notifications lagaiye (zaroori)</button>
+<div class="stats"><div class="stat"><b id="s1">0</b><small>Khul gaye</small></div><div class="stat"><b id="s2">0</b><small>Coming soon</small></div><div class="stat"><b id="s3">0</b><small>Aap ki visits</small></div></div>
 <div id="btn"></div>
 </header>
 <section class="sup" id="sup" hidden><h2>Birthday Support Centre 🎧</h2><p>Welcome to Birthday Support Centre. Aap ki birthday complaint register ho chuki hai.</p><div class="opts" id="so"></div><p class="rep" id="sr"></p><div id="sf"></div></section>
@@ -71,14 +83,6 @@ dialog::backdrop{background:#000b}dialog h2{font:600 22px var(--h);margin:0 0 10
 <dialog id="dl"><h2 id="dh"></h2><p id="dp"></p><button id="dx" type="button">Theek hai 💛</button></dialog>
 <script>
 // ====== EDIT HERE ======
-// 1) Birthday ki tareekh (saal-mahina-din). Poora schedule isi se khud set hota hai.
-const BIRTHDAY="2026-10-24";
-// 2) Mudassir ka asli gift kab pohanche ga (page par yahi likha nazar aayega)
-const GIFT_NOTE="14 se 16 Nov";
-// 3) Neeche DROPS mein T(-1,"22:00") ka matlab: birthday se 1 din pehle, raat 10:00 baje.
-//    T(0,"00:00") = birthday ki raat 12 baje, T(1,"14:00") = birthday ke agle din dopahar 2 baje.
-const addDays=(d,n)=>{const x=new Date(d+"T00:00:00Z");x.setUTCDate(x.getUTCDate()+n);return x.toISOString().slice(0,10)};
-const T=(n,hm)=>addDays(BIRTHDAY,n)+"T"+hm;
 const NAME="Mudassir";
 const AGE=19;
 const PASS=["pagli","pagal","pyari","churail","pagli!"];
@@ -87,22 +91,22 @@ const QUALS="Meri 3 achi qualities bataiye (comma laga kar):";
 const FUNNY="Agar 'Mujhe tang karne' ka Olympics ho, to aap kaun sa medal jeetein ge?";
 // Times are Pakistan time (PKT)
 const DROPS=[
- {at:T(-1,"22:00"),kind:"roast",title:"Kisi ne aap ko dekh liya 👻",img:"assets/p3.jpg",snd:"horror",n:"👻 Mudassir… kisi ne aap ko dekh liya hai. Link kholiye warna woh aa jayega",body:`Link khol liya, ${NAME}? Ab peeche mat dekhiyega.\nMidnight tak yahin rahiye. Aur upar Reminders wala button dabana mat bhooliyega.`},
- {at:T(-1,"23:30"),kind:"roast",title:"HAHAHA 😂",img:"assets/p4.jpg",snd:"laugh",n:"😂 HAHAHA! Aap sach mein intezaar kar rahe the? Aaiye dekhiye",body:`Aap sach mein intezaar kar rahe the?\n\n🏆 "Bas 5 minute" ke World Champion\n🏆 "Dekhte hain" ka Gold Medal\n🏆 Pagli ko tang karne mein 100% attendance\n\nYe sab maine khud likhe hain, kisi ne diye nahi.`},
- {at:T(0,"00:00"),kind:"letter",title:`Happy Birthday, ${NAME}! 🎂`,n:"🎂 HAPPY BIRTHDAY MUDASSIR! Abhi kholiye",body:`Ab official hai. Ek saal aur bade ho gaye, aqal wahin ki wahin.\nPar meri favourite tang karne ki wajah aap hi hain.\nUpar Birthday Support Centre khul gaya hai. Apni complaint wahan darj kijiye, cartoon. ❤️`},
- {at:T(0,"09:00"),kind:"roast",title:"Hu hu hu 😭",snd:"cry",n:"😭 Hu hu hu… aap ne abhi tak page nahi khola? Meri tang ka kya hoga",body:`Subah ho gayi aur aap ne mujhe call nahi ki? 😭\nOrder yeh hai: shukar, cake, phir call.`},
- {at:T(0,"15:00"),kind:"roast",title:"Boyfriend Performance Report",snd:"horror",n:"🕯️ Dopahar ka waqt… ek report aap ka intezaar kar rahi hai",body:`📊 ANNUAL REPORT\nMazaq karne ki skill: 100%\nMeri baat sunne ki skill: 12%\nNakhre: Unlimited\nBirthday par special treatment: Under review 😂`},
- {at:T(0,"21:00"),kind:"letter",title:"Din khatam hone laga",snd:"laugh",n:"😂 Aaj ka aakhri tang! Aaiye",body:`Aaj ka din kaisa raha? Jaisa bhi raha, mere liye aap wohi hain.\nAur suniye, silsila abhi khatam nahi hua. 💛`},
- {at:T(1,"00:00"),kind:"roast",title:"Kya laga, khatam? 💀",snd:"horror",n:"💀 Kya laga khatam? Din 2 shuru…",body:`Birthday kal tha, tang karna aaj bhi jari hai.\nDin 2 mubarak, mirasi. 😈`},
- {at:T(1,"14:00"),kind:"roast",title:"Certificate pending",snd:"cry",n:"😭 Certificate ready hai par call nahi aayi",body:`🏅 Officially Certified Birthday Boy: certificate ready.\nSign karne ke liye mujhe ek achi si call chahiye.`},
- {at:T(1,"21:00"),kind:"letter",title:"Aakhri khat 💛",n:"💛 Aakhri khat. Love you, Mudassir",body:`Teen din, ek page, bohat si tang.\nSab mazaak tha, magar ek baat mazaak nahi: shukriya ke aap hain.\nLove you, janeya. Ab mujhe call kijiye. 💛\n\n— Aap ki pagli`}
+ {at:"2026-11-15T22:00",kind:"roast",title:"Kisi ne aap ko dekh liya 👻",img:"assets/p3.jpg",snd:"horror",n:"👻 Mudassir… kisi ne aap ko dekh liya hai. Link kholiye warna woh aa jayega",body:`Link khol liya, ${NAME}? Ab peeche mat dekhiyega.\nMidnight tak yahin rahiye. Aur upar Reminders wala button dabana mat bhooliyega.`},
+ {at:"2026-11-15T23:30",kind:"roast",title:"HAHAHA 😂",img:"assets/p4.jpg",snd:"laugh",n:"😂 HAHAHA! Aap sach mein intezaar kar rahe the? Aaiye dekhiye",body:`Aap sach mein intezaar kar rahe the?\n\n🏆 "Bas 5 minute" ke World Champion\n🏆 "Dekhte hain" ka Gold Medal\n🏆 Pagli ko tang karne mein 100% attendance\n\nYe sab maine khud likhe hain, kisi ne diye nahi.`},
+ {at:"2026-11-16T00:00",kind:"letter",title:`Happy Birthday, ${NAME}! 🎂`,n:"🎂 HAPPY BIRTHDAY MUDASSIR! Abhi kholiye",body:`Ab official hai. Ek saal aur bade ho gaye, aqal wahin ki wahin.\nPar meri favourite tang karne ki wajah aap hi hain.\nUpar Birthday Support Centre khul gaya hai. Apni complaint wahan darj kijiye, cartoon. ❤️`},
+ {at:"2026-11-16T09:00",kind:"roast",title:"Hu hu hu 😭",snd:"cry",n:"😭 Hu hu hu… aap ne abhi tak page nahi khola? Meri tang ka kya hoga",body:`Subah ho gayi aur aap ne mujhe call nahi ki? 😭\nOrder yeh hai: shukar, cake, phir call.`},
+ {at:"2026-11-16T15:00",kind:"roast",title:"Boyfriend Performance Report",snd:"horror",n:"🕯️ Dopahar ka waqt… ek report aap ka intezaar kar rahi hai",body:`📊 ANNUAL REPORT\nMazaq karne ki skill: 100%\nMeri baat sunne ki skill: 12%\nNakhre: Unlimited\nBirthday par special treatment: Under review 😂`},
+ {at:"2026-11-16T21:00",kind:"letter",title:"Din khatam hone laga",snd:"laugh",n:"😂 Aaj ka aakhri tang! Aaiye",body:`Aaj ka din kaisa raha? Jaisa bhi raha, mere liye aap wohi hain.\nAur suniye, silsila abhi khatam nahi hua. 💛`},
+ {at:"2026-11-17T00:00",kind:"roast",title:"Kya laga, khatam? 💀",snd:"horror",n:"💀 Kya laga khatam? Din 2 shuru…",body:`Birthday kal tha, tang karna aaj bhi jari hai.\nDin 2 mubarak, mirasi. 😈`},
+ {at:"2026-11-17T14:00",kind:"roast",title:"Certificate pending",snd:"cry",n:"😭 Certificate ready hai par call nahi aayi",body:`🏅 Officially Certified Birthday Boy: certificate ready.\nSign karne ke liye mujhe ek achi si call chahiye.`},
+ {at:"2026-11-17T21:00",kind:"letter",title:"Aakhri khat 💛",n:"💛 Aakhri khat. Love you, Mudassir",body:`Teen din, ek page, bohat si tang.\nSab mazaak tha, magar ek baat mazaak nahi: shukriya ke aap hain.\nLove you, janeya. Ab mujhe call kijiye. 💛\n\n— Aap ki pagli`}
 ];
 // =======================
 const P=new URLSearchParams(location.search);
 let off=P.get("t")?new Date(P.get("t")+":00+05:00").getTime()-Date.now():0;if(isNaN(off))off=0;
 const now=()=>Date.now()+off,ts=d=>new Date(d.at+":00+05:00").getTime();
 DROPS.sort((a,b)=>ts(a)-ts(b));
-const BDAY=new Date(BIRTHDAY+"T00:00:00+05:00").getTime(),DAY2=BDAY+864e5,END=DAY2+864e5;
+const BDAY=new Date("2026-11-16T00:00:00+05:00").getTime(),DAY2=BDAY+864e5,END=DAY2+864e5;
 const $=id=>document.getElementById(id);
 const fmt=(t,o)=>new Date(t).toLocaleString("en-GB",Object.assign({timeZone:"Asia/Karachi"},o));
 const tm=t=>fmt(t,{hour:"numeric",minute:"2-digit",hour12:true}),dy=t=>fmt(t,{weekday:"short",day:"numeric",month:"short"});
@@ -114,7 +118,7 @@ addEventListener("pagehide",save);document.addEventListener("visibilitychange",(
 if(vis>0){$("w").hidden=false;$("w").textContent=pick(["Stop checking the website. Time is still running! 🤣","Dobara aa gaye? Sabr ka phal meetha hota hai. 🍬","Refresh karne se waqt tez nahi chalta, Agent. 🕵️","Mission control ne aap ko dekh liya hai. 👀"])}
 let shown=-1,prev=now();
 function head(){const n=now();let h,s,c="";
- if(n<ts(DROPS[0])){h="CLASSIFIED MISSION: Operation Birthday.";s=`Mission unlock hone mein waqt baqi hai. ${dy(ts(DROPS[0]))} ko ${tm(ts(DROPS[0]))} par wapas aaiye, Agent.`;}
+ if(n<ts(DROPS[0])){h="CLASSIFIED MISSION: Operation Birthday.";s="Mission unlock hone mein waqt baqi hai. 15 Nov raat 10 baje wapas aaiye, Agent.";}
  else if(n<BDAY){h=`Chaliye ${NAME}, midnight tak intezaar.`;s="Neeche kuch tang shuru ho chuki hai. Page khula rakhiye, ya baad mein wapas aaiye.";}
  else if(n<DAY2){h=`Happy Birthday, ${NAME}! 🎂`;c="bd";s="Aaj thori thori der baad kuch khulta rahega. Wapas aate rahiye.";}
  else if(n<END){h="Din 2: abhi khatam nahi hua 😈";c="bd";s="Tang ka silsila jari hai. Aakhri khat aaj raat khulega.";}
@@ -122,11 +126,11 @@ function head(){const n=now();let h,s,c="";
  $("sup").hidden=$("ck").hidden=!(n>=BDAY);$("h").textContent=h;$("h").className=c;$("s").textContent=s;
  $("nl").textContent=n<BDAY?"Mission unlock / agla surprise":"Agla surprise";}
 function thread(){const n=now(),un=DROPS.filter(d=>ts(d)<=n),lo=DROPS.filter(d=>ts(d)>n);
- if(un.length===shown)return;shown=un.length;head();
+ if(un.length===shown)return;shown=un.length;head();$("s1").textContent=un.length;$("s2").textContent=lo.length;$("s3").textContent=vis+1;
  let html="",last="";
  un.forEach(d=>{const t=ts(d),k=dy(t);if(k!==last){html+=`<div class="day">${k}</div>`;last=k}
   html+=`<article class="msg ${d.kind}"><b class="av">${d.kind=="letter"?"💌":"😈"}</b>${!first&&t>seen?'<span class="new">new</span>':''}<h2></h2><p></p><time>${tm(t)}</time></article>`});
- lo.forEach(d=>{html+=`<div class="typing">⏳ Kuch aa raha hai, ${dy(ts(d))} ${tm(ts(d))} par</div>`});
+ lo.forEach(d=>{html+=`<div class="lockbox"><i>🔒</i><div><strong>Coming soon</strong><span>${dy(ts(d))}, ${tm(ts(d))}</span></div></div>`});
  $("t").innerHTML=html;
  [...$("t").querySelectorAll("article")].forEach((a,i)=>{const d=un[i];a.querySelector("h2").textContent=d.title;a.querySelector("p").textContent=d.body;
   if(d.img){const m=new Image();m.src=d.img;m.className="ph";m.alt="";a.insertBefore(m,a.querySelector("p"))}
@@ -148,10 +152,10 @@ function ics(){const u=location.href.split("?")[0].split("#")[0],e=s=>s.replace(
  const a=document.createElement("a");a.href="data:text/calendar;charset=utf-8,"+encodeURIComponent("BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//bday//EN\r\n"+E+"\r\nEND:VCALENDAR");a.download="mudassir-birthday.ics";a.click()}
 $("rm").onclick=()=>{ics();if(window.Notification&&Notification.permission==="default")Notification.requestPermission();snd("laugh")};
 // ---- Support Centre -> Password -> Levels -> Endless loading -> Wish ----
-const R=[["Mujhe gift chahiye",["Itni jaldi kya hai?","Pehle meri 10 tareefein kijiye.","Nice try 😂","Gift raaste mein hai 📦 "+GIFT_NOTE+" tak pohanch jaye ga."]],["Mujhe wish chahiye",["Wish line mein hai, aap ka number 1 hai.","Sabr ka phal meetha hota hai, bilkul aap ki tarah (kabhi kabhi).","Bas aap ke nakhre khatam hone ka intezaar hai."]],["Mujhe bataya jaye surprise kya hai",["Classified. 🤫","Agent Mudassir, aap ki clearance level: zero.","Hint: is mein meri mohabbat bhi shamil hai. ❤️"]]];
+const R=[["Mujhe gift chahiye",["Itni jaldi kya hai?","Pehle meri 10 tareefein kijiye.","Nice try 😂","Gift taqriban tayyar hai 🎁"]],["Mujhe wish chahiye",["Wish line mein hai, aap ka number 1 hai.","Sabr ka phal meetha hota hai, bilkul aap ki tarah (kabhi kabhi).","Bas aap ke nakhre khatam hone ka intezaar hai."]],["Mujhe bataya jaye surprise kya hai",["Classified. 🤫","Agent Mudassir, aap ki clearance level: zero.","Hint: is mein meri mohabbat bhi shamil hai. ❤️"]]];
 const cn=[0,0,0];
 R.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.textContent=r[0];b.onclick=()=>{$("sr").textContent=r[1][cn[i]++%r[1].length];
- if(cn.every(x=>x)&&!$("sf").innerHTML){$("sf").innerHTML='<p class="rep">Aap ki request aap ki favourite insaan ne approve kar di hai. 😂❤️</p><button id="og" type="button">🎁 Apna birthday surprise kholiye</button>';$("og").onclick=gate}};$("so").appendChild(b)});
+ if(cn.every(x=>x)&&!$("sf").innerHTML){$("sf").innerHTML='<p class="rep">Aap ki request aap ki favourite insaan ne approve kar di hai. 😂❤️</p><button id="og" type="button">🎁 Apna gift kholiye</button>';$("og").onclick=gate}};$("so").appendChild(b)});
 const BAD=["Itna bhi nahi pata aap ko? 😤","Apni yaad-dasht check karwaiye. 😭","Hint dobara parhiye, aankhein khol kar. 👀","Bas kijiye, mujhe dukh ho raha hai. 🥲"];let bi=0;
 function gate(){$("sf").innerHTML=`<p>🔐 Secret Password dijiye.</p><p class="rep">Hint: ${HINT}</p><input id="pw" autocomplete="off" aria-label="password"><button id="pg" type="button">Unlock</button><p class="rep" id="pr"></p>`;
  $("pg").onclick=()=>{if(PASS.includes($("pw").value.trim().toLowerCase())){boom();lvl(1)}else{$("pr").textContent=BAD[bi++%BAD.length]}}}
@@ -168,7 +172,9 @@ function load(){$("sf").innerHTML='<p>Preparing the most special birthday wish e
  setTimeout(()=>{$("pt").textContent="99%… wait karein, sabr karein!";$("sf").insertAdjacentHTML("beforeend",'<button id="wt" type="button">Wait karein, sabr karein! ⏳</button>');
   $("wt").onclick=()=>{$("wt").remove();$("pt").textContent="100%… nahi nahi, phir 99%! 😂";setTimeout(reveal,2600)}},3000)}
 const LET=[["Open when you miss me 🥹","Main bas ek call door hoon, hamesha. Aankhein band kijiye, aur yaad kijiye ke hum kitna hanste hain. Phir bhi dil na maane to mujhe call kijiye, pagli ko bhi aap ki awaaz sunni hoti hai. ❤️"],["Open when I make you angry 😤","Pehle gehri saans lijiye. Phir yaad kijiye ke main aap ki nimona hoon. Galti ho to maaf kar dijiyega, aur agar na hui ho to bhi maaf kar dijiyega. Deal? 🤝"],["Open when you need a smile 😂","Aap mirasi hain, cartoon hain, aur meri favourite insaan hain. Ab muskuraiye, warna main churail ban jaungi. 😈"]];
-function reveal(){$("sf").innerHTML=`<div class="fin"><h2>Happy Birthday, ${NAME} 💛</h2><img src="assets/p2.jpg" alt=""><p>Aaj aap ek saal aur bade ho gaye, aur mera ek saal aap ke saath aur behtar ho gaya.\n\nAap mujhe pagli kehte hain, pyari kehte hain, kabhi kabhi churail bhi. Sach bataun to mujhe ye sab se zyada pasand hai, kyunke aap ki awaaz mein ye sab pyar lagta hai.\n\nMain busy hoti hoon, phir bhi aap hamesha available rehte hain, bina kisi shikayat ke. Ye chhoti baat nahi hai. Shukriya, jana.\n\nMay Allah give you health, success and the same smile that I see in your pictures. Meri dua mein bhi aap hamesha rehte hain.\n\nLove you, ${NAME}. ❤️\n\nAap ki pagli ❤️\n\n🎁 Asli tohfa raaste mein hai 📦 ${GIFT_NOTE} tak pohanch jaye ga. Tab tak sabr, Agent. 😄\n\nTap a letter to open it 💌</p><div class="opts" id="lt"></div><a class="lk" href="mama.html">💐 Mama ke liye alag page</a><p>🏅 Officially Certified Birthday Boy</p></div>`;boom();
+function reveal(){$("sf").innerHTML='<div class="dsc"><div class="dfr" id="df"><div class="drm"><span>🎁<br>Aap ka gift</span></div><i class="dlf l"></i><i class="dlf r"></i></div><p class="rep">Darwaza band hai. Dastak dijiye. 🚪</p><button id="dk" type="button">🚪 Darwaza kholiye</button></div>';
+ $("dk").onclick=()=>{$("df").classList.add("open");$("dk").remove();setTimeout(reveal2,2200)}}
+function reveal2(){$("sf").innerHTML=`<div class="fin"><h2>Happy Birthday, ${NAME} 💛</h2><img src="assets/p2.jpg" alt=""><p>Aaj aap ek saal aur bade ho gaye, aur mera ek saal aap ke saath aur behtar ho gaya.\n\nAap mujhe pagli kehte hain, pyari kehte hain, kabhi kabhi churail bhi. Sach bataun to mujhe ye sab se zyada pasand hai, kyunke aap ki awaaz mein ye sab pyar lagta hai.\n\nMain busy hoti hoon, phir bhi aap hamesha available rehte hain, bina kisi shikayat ke. Ye chhoti baat nahi hai. Shukriya, jana.\n\nMay Allah give you health, success and the same smile that I see in your pictures. Meri dua mein bhi aap hamesha rehte hain.\n\nLove you, ${NAME}. ❤️\n\nAap ki pagli ❤️\n\nTap a letter to open it 💌</p><div class="opts" id="lt"></div><a class="lk" href="mama.html">💐 Mama ke liye alag page</a><p>🏅 Officially Certified Birthday Boy</p></div>`;boom();
  LET.forEach(l=>{const b=document.createElement("button");b.type="button";b.textContent=l[0];b.onclick=()=>{$("dh").textContent=l[0];$("dp").textContent=l[1];$("dl").showModal()};$("lt").appendChild(b)})}
 $("dx").onclick=()=>$("dl").close();
 const RM=matchMedia("(prefers-reduced-motion:reduce)").matches;let lp=0;
